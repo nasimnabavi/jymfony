@@ -4,9 +4,7 @@ const symOuterMixin = Symbol('outerMixin');
 const symAppliedInterfaces = Symbol('appliedInterfaces');
 const symClassType = Symbol('classType');
 
-/**
- * @internal
- */
+
 class Mixins {
     /**
      * Creates a new mixin.
@@ -71,21 +69,7 @@ class Mixins {
     static * getFunctions(definition) {
         const chain = this._getClassChain(definition);
         const gen = function * (obj, isStatic) {
-            for (const fn of Object.getOwnPropertyNames(obj)) {
-                const descriptor = Object.getOwnPropertyDescriptor(obj, fn);
-                if ('constructor' !== fn && 'function' === typeof descriptor.value) {
-                    yield {'static': isStatic, fn: fn};
-                }
 
-                if ('function' === typeof descriptor.get || 'function' === typeof descriptor.set) {
-                    yield {
-                        'static': isStatic,
-                        'property': fn,
-                        'get': undefined !== descriptor.get,
-                        'set': undefined !== descriptor.set,
-                    };
-                }
-            }
         };
 
         for (const i of chain) {
